@@ -5,22 +5,19 @@ import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private prisma: PrismaService
-  ) { }
+  constructor(private prisma: PrismaService) {}
 
   async getUserByEmail(email: string) {
-    const user = await this.prisma.user
-      .findUnique({ where: { email } })
+    const user = await this.prisma.user.findUnique({ where: { email } });
 
-    return UserResponse.fromUser(user)
+    return UserResponse.fromUser(user);
   }
 
   async createUser(dto: LoginRequest) {
     const newUser = await this.prisma.user.create({
-      data: { ...dto }
-    })
+      data: { ...dto },
+    });
 
-    return UserResponse.fromUser(newUser)
+    return UserResponse.fromUser(newUser);
   }
 }

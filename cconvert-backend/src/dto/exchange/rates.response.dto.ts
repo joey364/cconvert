@@ -1,4 +1,4 @@
 export class RatesResponse {
-  baseCurrency: string
-  rates: { string: number }[]
+  baseCurrency: string;
+  rates: { string: number }[];
 }

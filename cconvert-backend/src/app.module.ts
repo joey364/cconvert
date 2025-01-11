@@ -9,11 +9,14 @@ import { AuthService } from './auth/auth.service';
 import { ExchangeModule } from './exchange/exchange.module';
 import { TransactionsService } from './transactions/transactions.service';
 
-
-
 @Module({
-  imports: [AuthModule, UsersModule, ConfigModule.forRoot({ isGlobal: true }), ExchangeModule,],
+  imports: [
+    AuthModule,
+    UsersModule,
+    ConfigModule.forRoot({ isGlobal: true }),
+    ExchangeModule,
+  ],
   controllers: [AuthController],
   providers: [UsersService, PrismaService, AuthService, TransactionsService],
 })
-export class AppModule { }
+export class AppModule {}

@@ -3,11 +3,9 @@ import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class TransactionsService {
-  constructor(private readonly prisma: PrismaService) {
-
-  }
+  constructor(private readonly prisma: PrismaService) {}
   async getUserTransactionsByUserId(userId: string) {
     // TODO: paginate this
-    return await this.prisma.transaction.findMany({ where: { userId } })
+    return await this.prisma.transaction.findMany({ where: { userId } });
   }
 }

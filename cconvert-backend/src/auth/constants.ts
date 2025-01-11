@@ -1,6 +1,6 @@
-import { ConfigService } from "@nestjs/config";
+import { ConfigService } from '@nestjs/config';
 
-const config = new ConfigService()
+const config = new ConfigService();
 
 export const jwtConstants = {
   secret: config.get('JWT_SECRET'),
