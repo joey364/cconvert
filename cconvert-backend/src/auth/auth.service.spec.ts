@@ -1,16 +1,16 @@
 import { AuthService } from './auth.service';
-import { PrismaService } from 'prisma.service';
+import { PrismaService } from './../prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { LoginRequest } from 'dto/auth/auth.dto';
+import { LoginRequest } from './../dto/auth/auth.dto';
 
 jest.mock('bcrypt', () => ({
   hash: jest.fn(),
   compare: jest.fn(),
 }));
 
-jest.mock('src/prisma.service');
+jest.mock('./../prisma.service');
 jest.mock('@nestjs/jwt');
 
 describe('AuthService', () => {
