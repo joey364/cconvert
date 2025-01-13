@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { LoginRequest } from 'src/dto/auth/auth.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -32,7 +32,7 @@ export class AuthService {
         user.password,
       );
       if (!passwordMatch) {
-        throw new Error('Invalid credentials');
+        throw new UnauthorizedException('Invalid credentials');
       }
 
       const payload = { userId: user.id, email: user.email };

@@ -1,30 +1,40 @@
 import { AuthService } from './auth.service';
-import { PrismaService } from './../prisma.service';
+import { PrismaService } from 'src/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { LoginRequest } from './../dto/auth/auth.dto';
+import { LoginRequest } from 'src/dto/auth/auth.dto';
+import { ConfigService } from '@nestjs/config';
 
 jest.mock('bcrypt', () => ({
   hash: jest.fn(),
   compare: jest.fn(),
 }));
 
-jest.mock('./../prisma.service');
 jest.mock('@nestjs/jwt');
+
+const prisma = {
+  user: {
+    findUnique: jest.fn(),
+    create: jest.fn(),
+  },
+};
 
 describe('AuthService', () => {
   let service: AuthService;
-  let prisma: PrismaService;
   let jwtService: JwtService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AuthService],
+      providers: [
+        AuthService,
+        { provide: PrismaService, useValue: prisma },
+        JwtService,
+        ConfigService,
+      ],
     }).compile();
 
     service = module.get<AuthService>(AuthService);
-    prisma = module.get<PrismaService>(PrismaService);
     jwtService = module.get<JwtService>(JwtService);
   });
 
@@ -77,12 +87,13 @@ describe('AuthService', () => {
 
     prisma.user.findUnique = jest.fn().mockResolvedValue(null);
 
-    (bcrypt.hash as jest.Mock) = jest.fn().mockResolvedValue('hashedPassword');
+    const hashedPassword = 'hashedPassword';
+    (bcrypt.hash as jest.Mock) = jest.fn().mockResolvedValue(hashedPassword);
 
     const createdUser = {
       id: 2,
       email: 'test@example.com',
-      password: 'hashedPassword',
+      password: hashedPassword,
     };
     prisma.user.create = jest.fn().mockResolvedValue(createdUser);
 
@@ -98,7 +109,7 @@ describe('AuthService', () => {
       where: { email: loginRequest.email },
     });
     expect(prisma.user.create).toHaveBeenCalledWith({
-      data: { email: loginRequest.email, password: 'hashedPassword' },
+      data: { email: loginRequest.email, password: hashedPassword },
     });
     expect(jwtService.sign).toHaveBeenCalledWith({
       userId: createdUser.id,
