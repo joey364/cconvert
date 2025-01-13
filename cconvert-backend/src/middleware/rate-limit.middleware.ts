@@ -1,4 +1,9 @@
-import { ForbiddenException, Injectable, NestMiddleware } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  Logger,
+  NestMiddleware,
+} from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 
 interface RateLimitData {
@@ -15,6 +20,8 @@ export class RateLimitMiddleware implements NestMiddleware {
   private readonly maxRequests = REQUEST_LIMIT;
   private readonly timeWindow = TIME_PERIOD;
 
+  private readonly logger = new Logger(RateLimitMiddleware.name);
+
   use(req: Request, res: Response, next: NextFunction): void {
     const userIp = req.ip;
 
@@ -30,6 +37,11 @@ export class RateLimitMiddleware implements NestMiddleware {
       return;
     }
 
+    this.logger.debug(
+      `Recieved request from: ${userIp}, number of reqs: ${rateData.count} lastRequestTime: ${rateData.lastRequestTime}`,
+    );
+
+    // reset count if lastRequestTimeDelta is greater than the allowed time window
     if (currentTime - rateData.lastRequestTime > this.timeWindow) {
       this.rateLimitData[userIp] = {
         count: 1,
@@ -41,6 +53,10 @@ export class RateLimitMiddleware implements NestMiddleware {
 
     // If within time window, check the count
     if (rateData.count >= this.maxRequests) {
+      this.logger.debug(
+        `requests from: ${userIp}, has exceeded limit: ${rateData.count} lastRequestTime: ${rateData.lastRequestTime}`,
+      );
+
       throw new ForbiddenException(
         'Rate limit exceeded. Please try again later.',
       );
