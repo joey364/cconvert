@@ -1,8 +1,9 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { ExchangeService } from './exchange.service';
-import { ConvertRequest } from 'src/dto/exchange/convert.request.dto';
+import { ConvertRequest } from 'src/exchange/dto/convert.request.dto';
 import { User } from 'src/users/user.decorator';
+import IUser from 'src/users/IUser';
 
 @Controller()
 export class ExchangeController {
@@ -15,7 +16,7 @@ export class ExchangeController {
 
   @UseGuards(AuthGuard)
   @Post('convert')
-  async convertCurrency(@Body() request: ConvertRequest, @User() user) {
+  async convertCurrency(@Body() request: ConvertRequest, @User() user: IUser) {
     return this.exchangeService.convert(request, user.userId);
   }
 }

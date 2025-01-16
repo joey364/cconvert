@@ -33,6 +33,9 @@ export class RateLimitMiddleware implements NestMiddleware {
         count: 1,
         lastRequestTime: currentTime,
       };
+      this.logger.debug(
+        `Recieved initial request from: ${userIp}, lastRequestTime: ${currentTime}`,
+      );
       next();
       return;
     }

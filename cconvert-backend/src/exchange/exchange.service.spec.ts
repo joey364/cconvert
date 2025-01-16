@@ -2,13 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ExchangeService } from './exchange.service';
 import { PrismaService } from 'src/prisma.service';
 import { ConfigService } from '@nestjs/config';
-import { RatesResponse } from 'src/dto/exchange/rates.response.dto';
+import { RatesResponse } from 'src/exchange/dto/rates.response.dto';
 import axios from 'axios';
 import { BadRequestException } from '@nestjs/common';
-import { ConvertRequest } from 'src/dto/exchange/convert.request.dto';
-import { ConvertResponse } from 'src/dto/exchange/convert.response.dto';
+import { ConvertRequest } from 'src/exchange/dto/convert.request.dto';
+import { ConvertResponse } from 'src/exchange/dto/convert.response.dto';
 
-jest.mock('axios')
+jest.mock('axios');
 jest.mock('src/prisma.service');
 jest.mock('@nestjs/config');
 
@@ -16,8 +16,8 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('ExchangeService', () => {
   let service: ExchangeService;
-  let prismaService: PrismaService
-  let configService: ConfigService
+  let prismaService: PrismaService;
+  let configService: ConfigService;
 
   const mockConfigService = {
     get: jest.fn(),
@@ -34,7 +34,7 @@ describe('ExchangeService', () => {
       providers: [
         ExchangeService,
         { provide: PrismaService, useValue: mockPrismaService },
-        { provide: ConfigService, useValue: mockConfigService }
+        { provide: ConfigService, useValue: mockConfigService },
       ],
     }).compile();
 
@@ -57,7 +57,7 @@ describe('ExchangeService', () => {
             EUR: 0.85,
             GBP: 0.75,
           },
-        }
+        },
       };
 
       mockedAxios.get.mockResolvedValue(mockResponse);
@@ -75,7 +75,9 @@ describe('ExchangeService', () => {
     it('should handle errors and throw a relevant exception', async () => {
       mockedAxios.get.mockRejectedValue(new BadRequestException());
 
-      await expect(service.getExchangeRates()).rejects.toThrowError(BadRequestException);
+      await expect(service.getExchangeRates()).rejects.toThrowError(
+        BadRequestException,
+      );
     });
   });
 
@@ -98,7 +100,10 @@ describe('ExchangeService', () => {
         convertedAmount: 85,
       });
 
-      const response: ConvertResponse = await service.convert(request, 'user-id');
+      const response: ConvertResponse = await service.convert(
+        request,
+        'user-id',
+      );
 
       expect(response.amount).toBe(request.amount);
       expect(response.convertedValue).toBe(85);
@@ -108,5 +113,5 @@ describe('ExchangeService', () => {
         data: { ...request, userId: 'user-id', convertedAmount: 85 },
       });
     });
-  })
+  });
 });

@@ -3,7 +3,7 @@ import { PrismaService } from 'src/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { LoginRequest } from 'src/dto/auth/auth.dto';
+import { LoginRequest, LoginResponse } from 'src/auth/auth.dto';
 import { ConfigService } from '@nestjs/config';
 
 jest.mock('bcrypt', () => ({
@@ -42,7 +42,7 @@ describe('AuthService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should return a token if user exits and password is correct', async () => {
+  it('should return a token if user exists and password is correct', async () => {
     // Arrange
     const loginRequest: LoginRequest = {
       email: 'test@example.com',
@@ -63,8 +63,11 @@ describe('AuthService', () => {
     // Act
     const result = await service.login(loginRequest);
 
+    const loginResponse = new LoginResponse();
+    loginResponse.token = mockToken;
+
     // Assert
-    expect(result).toBe(mockToken);
+    expect(result).toStrictEqual(loginResponse);
     expect(prisma.user.findUnique).toHaveBeenCalledWith({
       where: { email: loginRequest.email },
     });
@@ -100,11 +103,14 @@ describe('AuthService', () => {
     const mockToken = 'mockToken123';
     jwtService.sign = jest.fn().mockReturnValue(mockToken);
 
+    const loginResponse = new LoginResponse();
+    loginResponse.token = mockToken;
+
     // Act
     const result = await service.login(loginRequest);
 
     // Assert
-    expect(result).toBe(mockToken);
+    expect(result).toStrictEqual(loginResponse);
     expect(prisma.user.findUnique).toHaveBeenCalledWith({
       where: { email: loginRequest.email },
     });
