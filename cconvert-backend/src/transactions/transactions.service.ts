@@ -42,7 +42,7 @@ export class TransactionsService {
       response.convertedAmount = item.convertedAmount.toNumber();
       response.fromCurrency = item.fromCurrency;
       response.toCurrency = item.toCurrency;
-      response.timestamp = item.timestamp.getMilliseconds();
+      response.timestamp = item.timestamp.getTime();
       response.userId = item.userId;
 
       return response;
