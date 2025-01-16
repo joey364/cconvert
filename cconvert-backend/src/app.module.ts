@@ -8,6 +8,7 @@ import { AuthService } from './auth/auth.service';
 import { ExchangeModule } from './exchange/exchange.module';
 import { TransactionsService } from './transactions/transactions.service';
 import { RateLimitMiddleware } from './middleware/rate-limit.middleware';
+import { NonceValidatorMiddleware } from './middleware/nonce-validator.middleware';
 
 @Module({
   imports: [
@@ -21,6 +22,8 @@ import { RateLimitMiddleware } from './middleware/rate-limit.middleware';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(RateLimitMiddleware).forRoutes('*');
+    consumer
+      .apply(RateLimitMiddleware, NonceValidatorMiddleware)
+      .forRoutes('*');
   }
 }
