@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { PrismaService } from 'src/prisma.service';
 import { ConfigService } from '@nestjs/config';
-import { LoginRequest } from 'src/dto/auth/auth.dto';
+import { LoginRequest, LoginResponse } from 'src/auth/auth.dto';
 import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 
 describe('AuthController', () => {
