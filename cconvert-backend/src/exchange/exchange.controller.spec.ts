@@ -7,6 +7,7 @@ import { PrismaService } from 'src/prisma.service';
 import { ConvertRequest } from 'src/exchange/dto/convert.request.dto';
 import { ExecutionContext } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
+import IUser from 'src/users/IUser';
 
 jest.mock('src/auth/auth.guard');
 jest.mock('src/exchange/exchange.service');
@@ -74,7 +75,7 @@ describe('ExchangeController', () => {
         convertedValue: 85,
       };
 
-      const user = { userId: 'user-id' };
+      const user: IUser = { userId: 'user-id', email: 'user@email.com' };
 
       mockExchangeService.convert.mockResolvedValue(mockResponse);
 
