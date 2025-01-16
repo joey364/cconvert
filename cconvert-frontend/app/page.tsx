@@ -31,7 +31,7 @@ export default function Home() {
   const [result, setResult] = useState<null | number>(null)
   const [fromCurrency, setFromCurrency] = useState('')
   const [toCurrency, setToCurrency] = useState('')
-  const [convert, { isError }] = useConvertMutation()
+  const [convert, { isError, isLoading }] = useConvertMutation()
 
   const { toast } = useToast()
 
@@ -79,7 +79,7 @@ export default function Home() {
     if (!authToken) {
       redirect('/login')
     }
-  }, [])
+  }, [authToken])
 
   return (
     <div className="min-h-screen bg-background">
@@ -121,7 +121,7 @@ export default function Home() {
               </SelectContent>
             </Select>
           </div>
-          <Button onClick={handleConvert}>Convert</Button>
+          <Button onClick={handleConvert} disabled={isLoading}>Convert</Button>
           {result && (
             <div className="text-center text-xl mt-4">
               {amount} {fromCurrency} = {result.toFixed(2)} {toCurrency}

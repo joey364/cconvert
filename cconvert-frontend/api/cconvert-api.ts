@@ -13,6 +13,13 @@ export interface LoginResponse {
   token: string
 }
 
+export interface PaginationDto<T> {
+  page: number
+  limit: number
+  totalItems: number
+  data: T[]
+}
+
 export interface TransactionResponse {
   id: string
   fromCurrency: string
@@ -66,11 +73,11 @@ export const cconvertApi = createApi({
       query: () => `/exchange-rates`
     }),
 
-    getUserTransactions: builder.query<TransactionResponse[], { page: number, limit: number }>({
+    getUserTransactions: builder.query<PaginationDto<TransactionResponse>, { page: number, limit: number }>({
       query: ({ page = 1, limit = 10 }) => `/user/transactions?page=${page}&limit=${limit}`
     })
   })
 
 })
 
-export const { useLoginMutation, useGetExchangeRatesQuery, useGetUserTransactionsQuery, useConvertMutation } = cconvertApi
+export const { useLoginMutation, useGetExchangeRatesQuery, useLazyGetUserTransactionsQuery, useConvertMutation } = cconvertApi
