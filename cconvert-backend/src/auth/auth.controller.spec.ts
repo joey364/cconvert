@@ -35,7 +35,7 @@ describe('AuthController', () => {
   });
 
   describe('login', () => {
-    it('should return a token if login is successful', async () => {
+    it('should return a login response if login is successful', async () => {
       // Arrange
       const loginRequest: LoginRequest = {
         email: 'test@example.com',
@@ -43,13 +43,16 @@ describe('AuthController', () => {
       };
       const mockToken = 'mockToken123';
 
-      authService.login = jest.fn().mockResolvedValue(mockToken);
+      const loginResponse = new LoginResponse();
+      loginResponse.token = mockToken;
+
+      authService.login = jest.fn().mockResolvedValue(loginResponse);
 
       // Act
       const result = await controller.login(loginRequest);
 
       // Assert
-      expect(result).toBe(mockToken);
+      expect(result).toStrictEqual(loginResponse);
       expect(authService.login).toHaveBeenCalledWith(loginRequest);
     });
 
