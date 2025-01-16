@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ExchangeService } from './exchange.service';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'src/prisma.service';
-import { ConvertRequest } from 'src/dto/exchange/convert.request.dto';
+import { ConvertRequest } from 'src/exchange/dto/convert.request.dto';
 import { ExecutionContext } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { ExchangeService } from './exchange.service';
-import { ConvertRequest } from 'src/dto/exchange/convert.request.dto';
+import { ConvertRequest } from 'src/exchange/dto/convert.request.dto';
 import { User } from 'src/users/user.decorator';
 
 @Controller()

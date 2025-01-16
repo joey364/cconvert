@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
-import { RatesResponse } from 'src/dto/exchange/rates.response.dto';
-import { ConvertRequest } from 'src/dto/exchange/convert.request.dto';
+import { RatesResponse } from 'src/exchange/dto/rates.response.dto';
+import { ConvertRequest } from 'src/exchange/dto/convert.request.dto';
 import { PrismaService } from 'src/prisma.service';
-import { ConvertResponse } from 'src/dto/exchange/convert.response.dto';
+import { ConvertResponse } from 'src/exchange/dto/convert.response.dto';
 
 @Injectable()
 export class ExchangeService {
