@@ -1,36 +1,32 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Install package dependencies
+```bash 
+$ npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Copy `sample.env` to `.env` and provide the values required.
+```bash
+$ cp sample.env .env
+```
+See [sample.env](./sample.env)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Next, run the development server:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+$ npm run dev
+```
 
-## Learn More
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the app.
 
-To learn more about Next.js, take a look at the following resources:
+## Features implemented
+- Login page with client side validation
+- Conversion page
+- Dashboard showing user conversion history (paginated)
+- Setup RTK Query as the source for all data fetching from the api.
+- Implemented client-side form validation using yup and native solutions provided by markup tags `e.g. setting type=email for input elements for email validation`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Challenges ecountered
+- Issues with typing of errors returned from generated queries from RTK Query.
+  - Solution: Cast the error to any type
